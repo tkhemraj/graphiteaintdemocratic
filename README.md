@@ -62,11 +62,38 @@ IOCs go stale fast as Paragon rotates infrastructure. If you have new domains, p
 
 Code contributions: see `CONTRIBUTING.md`.
 
-## Legal
+## The legal framework problem
 
-This tool is for **defensive use only** — detecting spyware on devices you own or have explicit authorization to examine. 
+This is not a geopolitical argument. It is an argument about jurisdiction, data residency, and due process.
 
-Paragon Graphite is commercial spyware sold to state actors. Using this tool to find it on your own device is not illegal in any jurisdiction we're aware of. We are not lawyers. Don't be an idiot.
+Any entity — regardless of where it is based — that collects, processes, or retains personal data about an individual should be required to have:
+
+1. **Legitimate legal authority** over that person (jurisdiction)
+2. **A lawful basis** for collection — necessity, proportionality, judicial authorization
+3. **Data residency obligations** that keep the data within a jurisdiction where the individual has enforceable rights
+4. **Independent oversight** with the ability to sanction violations
+5. **A right to challenge** — the subject must be able to contest the collection in a competent court
+
+Commercial spyware operated through third-country infrastructure is engineered to circumvent all five. That is the problem.
+
+### Why existing law doesn't fill the gap
+
+| Framework | What it covers | What it misses |
+|-----------|---------------|----------------|
+| **Fourth Amendment** | US government actors | Foreign governments using Graphite on Americans — no constitutional protection applies |
+| **CLOUD Act** | US companies storing data abroad | Foreign spyware operators — no mechanism to compel Paragon to preserve, disclose, or delete anything |
+| **ECPA** | US law enforcement access to communications | Foreign intelligence services — entirely out of scope |
+| **GDPR** | Personal data of EU residents (commercial) | National security activities — explicitly carved out by Article 2(2) |
+| **HIPAA / CCPA / sector laws** | Data held by covered custodians | Data covertly exfiltrated by spyware — not obtained from a covered entity |
+| **US data residency law** | — | Does not exist at the federal level |
+
+Privacy practitioners who spent careers ensuring GDPR data residency compliance for clients — keeping EU personal data within jurisdictions where data subjects have enforceable rights — have no equivalent framework protecting their own data as Americans. When data exfiltrated from an American's device lands on servers in a third country, there is no US legal requirement that it be deleted, not shared, not retained indefinitely, or made accessible to the person it belongs to.
+
+The full legal analysis, including framework-by-framework breakdowns for both US and EU law, is in [`graphiteaintdemocratic/legal_framework.py`](graphiteaintdemocratic/legal_framework.py).
+
+## Defensive use
+
+This tool is for detecting spyware on devices you own or have explicit authorization to examine. Using it to find Graphite on your own device is not illegal in any jurisdiction we're aware of. We are not lawyers.
 
 ## License
 
