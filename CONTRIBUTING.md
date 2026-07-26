@@ -131,4 +131,16 @@ If you're a journalist or activist who received an Apple threat notification and
 
 ## License
 
-By contributing, you agree your contributions are licensed under GPL-3.0. Surveillance companies don't get to take this and make it proprietary.
+By contributing, you agree your contributions are licensed under **[GPL-3.0](LICENSE)**.
+
+**What that means:**
+
+| You can | You cannot |
+|---------|------------|
+| Use, modify, and distribute this code freely | Make a proprietary closed-source version |
+| Fork it and build your own tool on top of it | Strip out the license or copyright notices |
+| Charge for services built around it | Distribute modifications without releasing the source |
+
+The copyleft requirement is intentional. If you improve this tool and distribute it, the community gets to see those improvements. Surveillance companies don't get to take defensive research and make it proprietary.
+
+The full license text is in [`LICENSE`](LICENSE).
