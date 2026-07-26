@@ -10,3 +10,7 @@ build/
 Backup/
 *.backup/
 gaid_report*.html
+# editor / tool temp files
+.claude/
+.idea/
+.vscode/

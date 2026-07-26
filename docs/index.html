@@ -1,0 +1,1071 @@
+<title>graphiteaintdemocratic — Paragon Graphite Spyware Detector</title>
+<style>
+/* ── Tokens ──────────────────────────────────────────────────────────── */
+:root {
+  --bg:       #090c0e;
+  --surface:  #111518;
+  --surface2: #181d21;
+  --border:   #1d2428;
+  --text:     #dde2e7;
+  --muted:    #5c6b78;
+  --accent:   #00c4a0;
+  --accent-dim: #007a65;
+  --red:      #e8454a;
+  --amber:    #d97706;
+  --green:    #22c55e;
+  --code-bg:  #0d1114;
+
+  --font-display: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'Courier New', Courier, monospace;
+
+  --radius: 2px;
+  --max: 1100px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:       #edf0f2;
+    --surface:  #ffffff;
+    --surface2: #f4f6f8;
+    --border:   #d0d9e0;
+    --text:     #0d1114;
+    --muted:    #5a6e7f;
+    --accent:   #007a65;
+    --accent-dim: #005e4d;
+    --code-bg:  #f0f3f5;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #090c0e; --surface: #111518; --surface2: #181d21; --border: #1d2428;
+  --text: #dde2e7; --muted: #5c6b78; --accent: #00c4a0; --accent-dim: #007a65;
+  --code-bg: #0d1114;
+}
+:root[data-theme="light"] {
+  --bg: #edf0f2; --surface: #ffffff; --surface2: #f4f6f8; --border: #d0d9e0;
+  --text: #0d1114; --muted: #5a6e7f; --accent: #007a65; --accent-dim: #005e4d;
+  --code-bg: #f0f3f5;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+img { max-width: 100%; }
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+.divider { height: 1px; background: var(--border); margin: 0; }
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+nav {
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg);
+  backdrop-filter: blur(8px);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px; max-width: var(--max); margin: 0 auto;
+}
+.nav-brand {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.nav-links {
+  display: flex; gap: 24px; align-items: center;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+.nav-links .gh-btn {
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  display: flex; align-items: center; gap: 6px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.nav-links .gh-btn:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+.hero {
+  padding: 80px 0 60px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block; width: 24px; height: 1px;
+  background: var(--accent);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(42px, 7vw, 88px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  text-wrap: balance;
+  max-width: 820px;
+  margin-bottom: 28px;
+  color: var(--text);
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+.hero-sub {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+/* Indicator pills */
+.indicators {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px;
+}
+.indicator-pill {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.indicator-pill .conf {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.conf-high { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.conf-med  { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+.indicator-pill .name {
+  font-family: var(--font-mono);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+.indicator-pill .label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+/* Install strip */
+.install-strip {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex; align-items: center; gap: 16px;
+  max-width: 580px;
+}
+.install-strip .prompt {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.install-strip code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  flex: 1;
+}
+.install-strip .copy-btn {
+  background: none; border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer;
+  font-size: 11px; padding: 4px 10px;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.install-strip .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Stats bar ───────────────────────────────────────────────────────── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+.stat {
+  padding: 28px;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 32px; font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+.section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+.section:last-child { border-bottom: none; }
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.section-lead {
+  color: var(--muted);
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.75;
+  margin-bottom: 48px;
+}
+
+/* ── Detection grid ──────────────────────────────────────────────────── */
+.detect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.detect-card {
+  background: var(--surface);
+  padding: 32px;
+}
+.detect-platform {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+}
+.detect-platform-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.dot-ios    { background: #60a5fa; }
+.dot-android{ background: #4ade80; }
+.dot-net    { background: #f472b6; }
+
+.detect-card h3 {
+  font-size: 15px; font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.detect-card p {
+  font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 20px;
+}
+.detect-indicators { display: flex; flex-direction: column; gap: 8px; }
+.detect-ioc {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+}
+.detect-ioc-conf {
+  width: 6px; height: 6px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
+}
+.detect-ioc-body {}
+.detect-ioc-name {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.detect-ioc-desc {
+  font-size: 11px; color: var(--muted);
+  margin-top: 2px; line-height: 1.5;
+}
+
+/* ── Exfil chain ─────────────────────────────────────────────────────── */
+.chain-wrapper { position: relative; }
+.chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.chain-node {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background: var(--surface);
+  position: relative;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.chain-node.visible { opacity: 1; transform: translateX(0); }
+.chain-node:last-child { border-bottom: 1px solid var(--border); }
+.chain-node-left {
+  border-right: 1px solid var(--border);
+  padding: 24px;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--surface2);
+}
+.chain-node-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.chain-node-loc {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--muted);
+}
+.chain-node-right { padding: 24px; }
+.chain-node-ip {
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.chain-node-note {
+  font-size: 13px; color: var(--muted); line-height: 1.6;
+}
+.chain-arrow {
+  display: flex; align-items: center; padding: 0 24px;
+  height: 28px; color: var(--muted); font-size: 11px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  background: var(--code-bg);
+}
+.chain-arrow::before {
+  content: '↓ EXFILTRATION';
+  font-family: var(--font-mono);
+  color: var(--red);
+  font-size: 10px;
+}
+
+/* ── IOC table ───────────────────────────────────────────────────────── */
+.ioc-table-wrap { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+thead tr {
+  border-bottom: 1px solid var(--border);
+}
+th {
+  text-align: left; padding: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  font-weight: 600;
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+.td-mono {
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--text);
+  white-space: nowrap;
+}
+.td-muted { color: var(--muted); font-size: 12px; }
+.badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.1em;
+  padding: 2px 7px;
+  border-radius: 2px;
+  text-transform: uppercase; font-weight: 700;
+}
+.badge-red    { background: rgba(232,69,74,0.15); color: var(--red); border: 1px solid rgba(232,69,74,0.3); }
+.badge-amber  { background: rgba(217,119,6,0.15); color: var(--amber); border: 1px solid rgba(217,119,6,0.3); }
+.badge-green  { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+.badge-muted  { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+/* ── PII grid ────────────────────────────────────────────────────────── */
+.pii-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.pii-item {
+  background: var(--surface);
+  padding: 20px 24px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.pii-icon {
+  font-size: 16px; flex-shrink: 0; margin-top: 2px;
+  width: 20px; text-align: center;
+}
+.pii-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.pii-text strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* ── Quickstart ──────────────────────────────────────────────────────── */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  overflow-x: auto;
+}
+.code-block pre {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text);
+  white-space: pre;
+}
+.c-comment { color: var(--muted); }
+.c-prompt  { color: var(--accent); }
+.c-cmd     { color: var(--text); }
+.c-arg     { color: #60a5fa; }
+.c-out     { color: var(--red); font-weight: 700; }
+
+/* ── Legal box ───────────────────────────────────────────────────────── */
+.legal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+.legal-item {
+  border-left: 3px solid var(--red);
+  padding: 16px 20px;
+  background: var(--surface);
+}
+.legal-item p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.legal-item strong { color: var(--text); }
+
+/* ── CTA ─────────────────────────────────────────────────────────────── */
+.cta-section {
+  padding: 80px 0;
+  text-align: center;
+}
+.cta-section h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.cta-section p { color: var(--muted); max-width: 500px; margin: 0 auto 36px; }
+.btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--accent); color: #000;
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 0.02em;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.85; text-decoration: none; }
+.btn-outline {
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: border-color 0.15s;
+}
+.btn-outline:hover { border-color: var(--accent); text-decoration: none; }
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 28px;
+  max-width: var(--max); margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+footer .footer-left {
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--muted);
+}
+footer .footer-right {
+  font-size: 12px; color: var(--muted);
+}
+footer a { color: var(--muted); }
+footer a:hover { color: var(--accent); }
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .chain-node { grid-template-columns: 1fr; }
+  .chain-node-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .stat { padding: 20px; }
+  .hero { padding: 48px 0 40px; }
+  .section { padding: 48px 0; }
+  nav .nav-links li:not(:last-child) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chain-node { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+</style>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-brand">gaid://</span>
+    <ul class="nav-links">
+      <li><a href="#detect">Detection</a></li>
+      <li><a href="#iocs">IOCs</a></li>
+      <li><a href="#pii">Data</a></li>
+      <li><a href="#quickstart">Install</a></li>
+      <li>
+        <a href="https://github.com/tkhemraj/graphiteaintdemocratic" class="gh-btn" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Paragon Solutions · Graphite Spyware · Detection Toolkit</p>
+    <h1>Paragon claims <em>democracy.</em><br>We check their work.</h1>
+    <p class="hero-sub">
+      The first open-source detector for Paragon Graphite — commercial spyware sold to governments
+      and used against journalists, NGO workers, and activists. No user interaction required to infect.
+      No warrant required if you're American.
+    </p>
+
+    <div class="indicators">
+      <div class="indicator-pill">
+        <span class="conf conf-high"></span>
+        <div>
+          <div class="name">BIGPRETZEL</div>
+          <div class="label">Android · HIGH confidence</div>
+        </div>
+      </div>
+      <div class="indicator-pill">
+        <span class="conf conf-med"></span>
+        <div>
+          <div class="name">SMALLPRETZEL</div>
+          <div class="label">iOS · MEDIUM confidence</div>
+        </div>
+      </div>
+      <div class="indicator-pill">
+        <span class="conf conf-high"></span>
+        <div>
+          <div class="name">ATTACKER1</div>
+          <div class="label">iOS iMessage · HIGH confidence</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="install-strip">
+      <span class="prompt">$</span>
+      <code>pip install git+https://github.com/tkhemraj/graphiteaintdemocratic</code>
+      <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install git+https://github.com/tkhemraj/graphiteaintdemocratic'); this.textContent='Copied'; setTimeout(()=>this.textContent='Copy',2000)">Copy</button>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-value">3</div>
+    <div class="stat-label">Named indicators</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">11</div>
+    <div class="stat-label">C2 domains</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">9</div>
+    <div class="stat-label">Known C2 IPs</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">7</div>
+    <div class="stat-label">Gov't customers</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">~90</div>
+    <div class="stat-label">Known targets (Jan 2025)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Other OSS detectors</div>
+  </div>
+</div>
+
+<!-- Detection -->
+<section class="section" id="detect">
+  <div class="container">
+    <p class="section-eyebrow">Detection capabilities</p>
+    <h2>What gaid finds on your device</h2>
+    <p class="section-lead">
+      MVT (Amnesty Tech's Mobile Verification Toolkit) has zero Graphite coverage.
+      gaid fills that gap with indicators sourced directly from Citizen Lab's published
+      forensics and the WhatsApp v. Paragon lawsuit filing.
+    </p>
+
+    <div class="detect-grid">
+      <div class="detect-card">
+        <div class="detect-platform">
+          <span class="detect-platform-dot dot-android"></span>Android
+        </div>
+        <h3>Logcat &amp; Bugreport Scanner</h3>
+        <p>Scans Android system logs — live via ADB or from a dumped bugreport — for strings unique to Graphite's in-process injection technique.</p>
+        <div class="detect-indicators">
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-high"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">BIGPRETZEL</div>
+              <div class="detect-ioc-desc">Uniquely identifies Graphite per WhatsApp lawsuit. Found in logcat on all confirmed victims.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf" style="background:var(--muted)"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">Process injection detection</div>
+              <div class="detect-ioc-desc">Graphite loads into WhatsApp/Signal processes — checks for anomalous memory mappings.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf" style="background:var(--muted)"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">C2 network connections</div>
+              <div class="detect-ioc-desc">Cross-references /proc/net/tcp against known Paragon IP ranges.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detect-card">
+        <div class="detect-platform">
+          <span class="detect-platform-dot dot-ios"></span>iOS
+        </div>
+        <h3>Sysdiagnose &amp; Backup Analysis</h3>
+        <p>Analyzes iOS backup artifacts, shutdown logs, and sysdiagnose archives for Graphite process anomalies and iMessage exploit residue.</p>
+        <div class="detect-indicators">
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-high"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">ATTACKER1</div>
+              <div class="detect-ioc-desc">Attacker iMessage account ID found in device logs. Correlated with C2 at 46.183.184.91.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-med"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">SMALLPRETZEL</div>
+              <div class="detect-ioc-desc">Anomalous appleaccountd / CloudKit activity. Found on David Yambio's iPhone, June 2024.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-med"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">CVE-2025-43200 artifacts</div>
+              <div class="detect-ioc-desc">imagent crashes — zero-click iMessage exploit delivery. Patched iOS 18.3.1.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf" style="background:var(--muted)"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">Shutdown log anomalies</div>
+              <div class="detect-ioc-desc">Spyware processes that fail to terminate cleanly or appear with unexpected PIDs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detect-card">
+        <div class="detect-platform">
+          <span class="detect-platform-dot dot-net"></span>Network
+        </div>
+        <h3>C2 Infrastructure Detection</h3>
+        <p>Identifies Paragon command-and-control communication in PCAP captures and live DNS. TLS fingerprints for all four certificate families.</p>
+        <div class="detect-indicators">
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-high"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">Known C2 IPs &amp; domains</div>
+              <div class="detect-ioc-desc">9 IPs, 11 operator-codename domains sourced from Citizen Lab March + June 2025.</div>
+            </div>
+          </div>
+          <div class="detect-ioc">
+            <div class="detect-ioc-conf conf-med"></div>
+            <div class="detect-ioc-body">
+              <div class="detect-ioc-name">TLS cert fingerprints P1–P4</div>
+              <div class="detect-ioc-desc">Censys queries to enumerate Paragon's ~150 rotating victim-facing C2 certificates.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Exfil chain -->
+<section class="section" id="chain">
+  <div class="container">
+    <p class="section-eyebrow">Data exfiltration chain</p>
+    <h2>Where your data goes</h2>
+    <p class="section-lead">
+      When Graphite compromises your device, your private data traverses this chain —
+      from your phone through servers in multiple countries before reaching
+      the government operator that purchased access.
+    </p>
+
+    <div class="chain" id="exfil-chain">
+      <div class="chain-node">
+        <div class="chain-node-left">
+          <div class="chain-node-label">Your device</div>
+          <div class="chain-node-loc">Target country</div>
+        </div>
+        <div class="chain-node-right">
+          <div class="chain-node-ip">— zero-click exploit delivery —</div>
+          <div class="chain-node-note">WhatsApp PDF or iMessage iCloud Link triggers memory corruption exploit. Sandbox escape follows. Graphite loads into WhatsApp or Signal process memory. All messages read after decryption — encryption irrelevant.</div>
+        </div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-node">
+        <div class="chain-node-left">
+          <div class="chain-node-label">Victim-facing C2</div>
+          <div class="chain-node-loc">Austria (EDIS Global)</div>
+        </div>
+        <div class="chain-node-right">
+          <div class="chain-node-ip">46.183.184.91</div>
+          <div class="chain-node-note">First-hop relay. Strips identifying metadata before forwarding upstream. Nominally EU jurisdiction but operated for a non-EU entity — GDPR applicability is legally untested.</div>
+        </div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-node">
+        <div class="chain-node-left">
+          <div class="chain-node-label">Paragon Core Infra</div>
+          <div class="chain-node-loc">Israel</div>
+        </div>
+        <div class="chain-node-right">
+          <div class="chain-node-ip">84.110.122.27 · 178.237.39.204 · 84.110.47.82–86</div>
+          <div class="chain-node-note">All customer data passes through Paragon's own Israeli servers. Paragon claims they cannot see customer content. No independent audit has verified this. Israeli law does not require it.</div>
+        </div>
+      </div>
+      <div class="chain-arrow"></div>
+      <div class="chain-node">
+        <div class="chain-node-left">
+          <div class="chain-node-label">Government Operator</div>
+          <div class="chain-node-loc">Customer country</div>
+        </div>
+        <div class="chain-node-right">
+          <div class="chain-node-ip">external-cap.com · external-astra.com · forti.external-sht.com · ...</div>
+          <div class="chain-node-note">End recipient. In Italy: data on journalists confirmed shared with political figures. In Canada: Ontario Provincial Police. In Singapore, Cyprus, Denmark, Australia — attribution confirmed by Citizen Lab.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IOC table -->
+<section class="section" id="iocs">
+  <div class="container">
+    <p class="section-eyebrow">Intelligence · Confirmed IOCs</p>
+    <h2>Known Paragon infrastructure</h2>
+    <p class="section-lead">
+      Sourced from Citizen Lab March 2025 and June 2025 reports. Paragon rotates infrastructure
+      frequently — run the Censys P1–P4 queries to enumerate their current live certificates.
+    </p>
+
+    <div class="ioc-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Indicator</th>
+            <th>Type</th>
+            <th>Attribution</th>
+            <th>Confidence</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-mono">BIGPRETZEL</td>
+            <td class="td-muted">Log string</td>
+            <td class="td-muted">Android / Graphite injection</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">WhatsApp lawsuit + CL 2025-06</td>
+          </tr>
+          <tr>
+            <td class="td-mono">ATTACKER1</td>
+            <td class="td-muted">Log string</td>
+            <td class="td-muted">iOS / iMessage attacker account</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-06</td>
+          </tr>
+          <tr>
+            <td class="td-mono">SMALLPRETZEL</td>
+            <td class="td-muted">Log string</td>
+            <td class="td-muted">iOS / CloudKit anomaly</td>
+            <td><span class="badge badge-amber">MEDIUM</span></td>
+            <td class="td-muted">Citizen Lab 2025-06</td>
+          </tr>
+          <tr>
+            <td class="td-mono">46.183.184.91</td>
+            <td class="td-muted">IP — C2</td>
+            <td class="td-muted">Victim-facing C2 (EDIS Global, AT)</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-06</td>
+          </tr>
+          <tr>
+            <td class="td-mono">84.110.122.27</td>
+            <td class="td-muted">IP — Core</td>
+            <td class="td-muted">Israeli core infra</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-03</td>
+          </tr>
+          <tr>
+            <td class="td-mono">external-cap.com</td>
+            <td class="td-muted">Domain</td>
+            <td class="td-muted">Canada — Ontario Provincial Police</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-03</td>
+          </tr>
+          <tr>
+            <td class="td-mono">external-astra.com</td>
+            <td class="td-muted">Domain</td>
+            <td class="td-muted">Australia</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-03</td>
+          </tr>
+          <tr>
+            <td class="td-mono">forti.external-sht.com</td>
+            <td class="td-muted">Domain</td>
+            <td class="td-muted">Singapore</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-03</td>
+          </tr>
+          <tr>
+            <td class="td-mono">forti.paraccess.com</td>
+            <td class="td-muted">Domain — Core</td>
+            <td class="td-muted">Paragon (2021–2025)</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Citizen Lab 2025-03</td>
+          </tr>
+          <tr>
+            <td class="td-mono">CVE-2025-43200</td>
+            <td class="td-muted">CVE</td>
+            <td class="td-muted">iOS iMessage zero-click (≤18.2.1)</td>
+            <td><span class="badge badge-red">HIGH</span></td>
+            <td class="td-muted">Apple / Citizen Lab 2025-06</td>
+          </tr>
+          <tr>
+            <td class="td-mono">TLS P4 cert</td>
+            <td class="td-muted">TLS fingerprint</td>
+            <td class="td-muted">Org="Graphite", CN="installerserver"</td>
+            <td><span class="badge badge-amber">MEDIUM</span></td>
+            <td class="td-muted">Citizen Lab 2025-03 / Censys</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- PII section -->
+<section class="section" id="pii">
+  <div class="container">
+    <p class="section-eyebrow">PII exposure</p>
+    <h2>What Graphite takes — and why Americans have no legal protection</h2>
+    <p class="section-lead">
+      Graphite reads encrypted messages in memory after decryption, meaning Signal, WhatsApp,
+      and iMessage encryption provide no protection. The data then transits Israeli servers
+      outside any US legal framework.
+    </p>
+
+    <div class="pii-grid" style="margin-bottom: 48px;">
+      <div class="pii-item">
+        <div class="pii-icon">✉</div>
+        <div class="pii-text"><strong>Encrypted messages</strong>Read in plaintext after decryption — Signal, WhatsApp, iMessage, Telegram</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">◎</div>
+        <div class="pii-text"><strong>Real-time location</strong>GPS coordinates + location history. Wi-Fi networks visited reveals physical movements.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">◻</div>
+        <div class="pii-text"><strong>Contacts &amp; relationships</strong>Full address book including relationship metadata and communication frequency.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">◈</div>
+        <div class="pii-text"><strong>Photos &amp; videos</strong>Current and deleted, recovered from app caches. Includes EXIF location data.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">◐</div>
+        <div class="pii-text"><strong>Microphone &amp; camera</strong>Ambient audio recording and covert photo/video capture without notification.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">◧</div>
+        <div class="pii-text"><strong>Keystrokes &amp; clipboard</strong>Everything typed, including passwords. Everything copied to clipboard.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">△</div>
+        <div class="pii-text"><strong>Call logs &amp; emails</strong>Inbound/outbound calls with duration. All emails including drafts never sent.</div>
+      </div>
+      <div class="pii-item">
+        <div class="pii-icon">⬡</div>
+        <div class="pii-text"><strong>Device identifiers</strong>IMEI, UDID, advertising ID — enables tracking across device replacements.</div>
+      </div>
+    </div>
+
+    <p class="section-eyebrow" style="margin-bottom:16px;">Why Americans have no legal recourse</p>
+    <div class="legal-grid">
+      <div class="legal-item">
+        <p><strong>No FISA warrant required.</strong> Foreign governments purchasing Graphite can target Americans abroad — or Americans communicating with foreign nationals — without any US court authorization.</p>
+      </div>
+      <div class="legal-item">
+        <p><strong>CLOUD Act doesn't apply.</strong> The CLOUD Act governs US companies storing data abroad. Paragon is Israeli. Their servers are Israeli. No US data-protection law directly constrains what they collect.</p>
+      </div>
+      <div class="legal-item">
+        <p><strong>No breach notification.</strong> No law requires Paragon or their customers to notify American targets that their devices were compromised. You find out from Apple threat notifications — if you're lucky.</p>
+      </div>
+      <div class="legal-item">
+        <p><strong>Data retention unknown.</strong> Paragon's retention policies for exfiltrated data are not public. Citizen Lab found no evidence of independent audits. The data could be kept indefinitely.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quickstart -->
+<section class="section" id="quickstart">
+  <div class="container">
+    <p class="section-eyebrow">Quickstart</p>
+    <h2>Check your device</h2>
+    <p class="section-lead">
+      gaid runs locally — no data leaves your machine. Android requires USB debugging enabled.
+      iOS backup analysis works on any standard iTunes/Finder backup.
+    </p>
+
+    <div class="code-block">
+      <pre><span class="c-comment"># Install</span>
+<span class="c-prompt">$</span> <span class="c-cmd">pip install</span> <span class="c-arg">git+https://github.com/tkhemraj/graphiteaintdemocratic</span>
+
+<span class="c-comment"># Android — scan live logcat via ADB (device connected + USB debugging on)</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid android</span> <span class="c-arg">--adb</span>
+[*] Pulling logcat from connected device...
+<span class="c-out">[!!!] FOUND 'BIGPRETZEL' [HIGH] — uniquely identifies Graphite infection</span>
+
+<span class="c-comment"># Android — scan a saved bugreport</span>
+<span class="c-prompt">$</span> <span class="c-cmd">adb bugreport</span> <span class="c-arg">bugreport.zip</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid android</span> <span class="c-arg">--bugreport bugreport.zip</span>
+
+<span class="c-comment"># iOS — analyze iTunes backup</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid ios</span> <span class="c-arg">--backup ~/Library/Application\ Support/MobileSync/Backup/&lt;udid&gt;</span>
+
+<span class="c-comment"># iOS — analyze sysdiagnose archive (Settings → Privacy → Analytics)</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid ios</span> <span class="c-arg">--sysdiagnose sysdiagnose.tar.gz</span>
+
+<span class="c-comment"># iOS — check shutdown log for process anomalies</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid ios</span> <span class="c-arg">--shutdown-log /path/to/shutdown.log</span>
+
+<span class="c-comment"># Network — analyze a PCAP for C2 communication</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid network</span> <span class="c-arg">--pcap capture.pcap</span>
+
+<span class="c-comment"># Show loaded IOC summary</span>
+<span class="c-prompt">$</span> <span class="c-cmd">gaid iocs</span>
+Loaded IOCs:
+  Domains:         11
+  IPs:             9
+  Log strings:     3
+    [HIGH] BIGPRETZEL  (android) — uniquely identifies Graphite infection
+    [MEDIUM] SMALLPRETZEL  (ios) — implausible CloudKit/appleaccountd activity
+    [HIGH] ATTACKER1  (ios) — attacker iMessage account identifier</pre>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="container">
+    <h2>IOCs go stale. Help us keep up.</h2>
+    <p>Paragon rotates infrastructure aggressively. If you have new domains, process names, or file artifacts — open a PR.</p>
+    <div class="btn-group">
+      <a href="https://github.com/tkhemraj/graphiteaintdemocratic" class="btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+      <a href="https://github.com/tkhemraj/graphiteaintdemocratic/issues/new" class="btn-outline" target="_blank" rel="noopener">Submit an IOC</a>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<footer>
+  <div class="footer-left">
+    graphiteaintdemocratic · GPL-3.0 · built on Citizen Lab research
+  </div>
+  <div class="footer-right">
+    <a href="https://citizenlab.ca" target="_blank" rel="noopener">Citizen Lab</a> ·
+    <a href="https://github.com/mvt-project/mvt" target="_blank" rel="noopener">MVT</a> ·
+    <a href="https://github.com/tkhemraj/graphiteaintdemocratic" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<script>
+// Animate exfil chain nodes on scroll
+(function() {
+  const nodes = document.querySelectorAll('.chain-node');
+  if (!nodes.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    nodes.forEach(n => n.classList.add('visible'));
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const node = entry.target;
+        const idx = Array.from(nodes).indexOf(node);
+        setTimeout(() => node.classList.add('visible'), idx * 100);
+        obs.unobserve(node);
+      }
+    });
+  }, { threshold: 0.15 });
+  nodes.forEach(n => obs.observe(n));
+})();
+</script>
