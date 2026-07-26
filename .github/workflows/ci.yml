@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff check
+        run: ruff check graphiteaintdemocratic/
+
+      - name: Ruff format check
+        run: ruff format --check graphiteaintdemocratic/
+
+  ioc-validate:
+    name: Validate IOC files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Validate IOC files load cleanly
+        run: python -c "
+from graphiteaintdemocratic.iocs import (
+    load_domains, load_ips, load_log_strings,
+    load_processes, load_file_artifacts
+)
+domains = load_domains()
+ips = load_ips()
+strings = load_log_strings()
+processes = load_processes()
+artifacts = load_file_artifacts()
+assert len(strings) >= 3, f'Expected at least 3 log strings (BIGPRETZEL/SMALLPRETZEL/ATTACKER1), got {len(strings)}'
+string_names = [s['string'] for s in strings]
+assert 'BIGPRETZEL' in string_names, 'BIGPRETZEL missing from log_strings.txt'
+assert 'SMALLPRETZEL' in string_names, 'SMALLPRETZEL missing from log_strings.txt'
+assert 'ATTACKER1' in string_names, 'ATTACKER1 missing from log_strings.txt'
+assert len(domains) > 0, 'No domains loaded'
+assert len(ips) > 0, 'No IPs loaded'
+print(f'IOCs OK: {len(domains)} domains, {len(ips)} IPs, {len(strings)} log strings')
+"
