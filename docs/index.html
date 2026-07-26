@@ -914,14 +914,14 @@ footer a:hover { color: var(--accent); }
 <section class="section" id="pii">
   <div class="container">
     <p class="section-eyebrow">PII exposure</p>
-    <h2>What Graphite takes — and why Americans have no legal protection</h2>
+    <h2>What Graphite takes from your device</h2>
     <p class="section-lead">
-      Graphite reads encrypted messages in memory after decryption, meaning Signal, WhatsApp,
-      and iMessage encryption provide no protection. The data then transits Israeli servers
-      outside any US legal framework.
+      Graphite reads encrypted messages in memory after decryption — Signal, WhatsApp, and
+      iMessage encryption provide zero protection. The data then transits infrastructure
+      outside any jurisdiction where you have enforceable rights.
     </p>
 
-    <div class="pii-grid" style="margin-bottom: 48px;">
+    <div class="pii-grid" style="margin-bottom: 64px;">
       <div class="pii-item">
         <div class="pii-icon">✉</div>
         <div class="pii-text"><strong>Encrypted messages</strong>Read in plaintext after decryption — Signal, WhatsApp, iMessage, Telegram</div>
@@ -956,20 +956,58 @@ footer a:hover { color: var(--accent); }
       </div>
     </div>
 
-    <p class="section-eyebrow" style="margin-bottom:16px;">Why Americans have no legal recourse</p>
-    <div class="legal-grid">
-      <div class="legal-item">
-        <p><strong>No FISA warrant required.</strong> Foreign governments purchasing Graphite can target Americans abroad — or Americans communicating with foreign nationals — without any US court authorization.</p>
+    <!-- Legal framework -->
+    <p class="section-eyebrow" style="margin-bottom: 12px;">The legal framework problem</p>
+    <h3 style="font-size: clamp(20px,3vw,30px); font-weight:800; letter-spacing:-0.02em; margin-bottom:16px; text-wrap:balance;">
+      This is not about where Paragon is based.<br>It is about jurisdiction, data residency, and due process.
+    </h3>
+    <p style="color:var(--muted); max-width:680px; line-height:1.8; margin-bottom:40px; font-size:15px;">
+      Any entity — regardless of country of origin — that collects, processes, or retains
+      personal data about an individual should be required to have legitimate legal authority
+      over that person, a lawful basis for collection, and data residency obligations that
+      keep the data within a jurisdiction where the individual has enforceable rights.
+      Commercial spyware operated through third-country infrastructure is engineered to
+      circumvent all three. That is the problem.
+    </p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); margin-bottom:48px;">
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--red);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Fourth Amendment</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">Only constrains US government actors</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">When a foreign government uses Graphite on an American journalist, the Fourth Amendment does not apply. The collection is legally invisible to US constitutional law. Data can be shared with other foreign agencies — no US judicial oversight at any point in the chain.</p>
       </div>
-      <div class="legal-item">
-        <p><strong>CLOUD Act doesn't apply.</strong> The CLOUD Act governs US companies storing data abroad. Paragon is Israeli. Their servers are Israeli. No US data-protection law directly constrains what they collect.</p>
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--red);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">CLOUD Act (2018)</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">Governs US companies — not foreign spyware operators</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">The CLOUD Act can compel Google or Apple to produce data stored abroad. It has no mechanism to compel a foreign spyware company. When Paragon's infrastructure receives exfiltrated data from an American's device, no US law requires Paragon to preserve, disclose, or delete it. No notification right exists.</p>
       </div>
-      <div class="legal-item">
-        <p><strong>No breach notification.</strong> No law requires Paragon or their customers to notify American targets that their devices were compromised. You find out from Apple threat notifications — if you're lucky.</p>
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--red);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">No federal data residency law</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">The United States has no GDPR equivalent</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">Privacy practitioners who spent years ensuring GDPR data residency compliance for clients — keeping EU personal data within jurisdictions where data subjects have enforceable rights — have no equivalent framework protecting their own data as Americans. That gap is structural, not accidental.</p>
       </div>
-      <div class="legal-item">
-        <p><strong>Data retention unknown.</strong> Paragon's retention policies for exfiltrated data are not public. Citizen Lab found no evidence of independent audits. The data could be kept indefinitely.</p>
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--amber);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">GDPR — National security carve-out</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">Even the EU's gold standard has a gap</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">GDPR Article 2(2) explicitly excludes national security activities from its scope. When Italy uses Graphite on Italian journalists, GDPR does not apply. Israel has an EU adequacy decision — but it covers commercial data transfers, not intelligence collection through third-party spyware infrastructure.</p>
       </div>
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--amber);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Sector laws (HIPAA, CCPA, ECPA)</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">Govern custodians — not data that was stolen</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7;">HIPAA, CCPA, and ECPA govern companies holding your data as part of a service relationship. None of them govern data covertly exfiltrated by state-sponsored spyware. If Graphite copies your protected health records off your phone, HIPAA provides no remedy — the data was not obtained from a covered entity.</p>
+      </div>
+
+      <div style="background:var(--surface); padding:28px 28px 28px 24px; border-left: 3px solid var(--accent);">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">What lawful collection requires</div>
+        <p style="font-size:13px; color:var(--text); font-weight:600; margin-bottom:8px;">The standard that should apply</p>
+        <p style="font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:12px;">Collection should require: judicial authorization from a court with jurisdiction; a documented lawful basis; data stored within a jurisdiction where the subject has rights; retention limited to the stated purpose; and the subject's ability to challenge the collection. Graphite satisfies none of these for any of its documented targets.</p>
+      </div>
+
     </div>
   </div>
 </section>
