@@ -1,0 +1,10 @@
+# Confirmed log strings found on Graphite-infected devices
+# Sources: WhatsApp lawsuit (NDCA 2025), Citizen Lab June 2025
+# Format: string # platform | source | confidence | notes
+#
+# These strings were identified in forensic analysis of confirmed victim devices.
+# BIGPRETZEL in particular was confirmed by WhatsApp to uniquely identify Graphite.
+
+BIGPRETZEL # android | whatsapp_lawsuit_2025 citizen_lab_2025_06 | HIGH | Found in Android logcat/bugreport on all confirmed Graphite victims; spyware loads into WhatsApp/Signal process memory; dates seen: 2024-12-22 -26 2025-01-03 -13 -23 -28 -31 on Caccia device, 2024-12-23 on Casarini device
+SMALLPRETZEL # ios | citizen_lab_2025_06 | MEDIUM | Implausible CloudKit activity relating to appleaccountd process; found on David Yambio iPhone June 2024; Citizen Lab cannot yet conclusively tie to Graphite vs other spyware family
+ATTACKER1 # ios | citizen_lab_2025_06 | HIGH | Attacker iMessage account identifier found in device logs of Ciro Pellegrino; correlated with C2 callout to 46.183.184.91

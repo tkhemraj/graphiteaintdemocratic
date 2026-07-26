@@ -1,0 +1,17 @@
+# Known Paragon Graphite C2 IP addresses
+# Sources: Citizen Lab March 2025, Citizen Lab June 2025
+# Format: ip # source | notes
+
+# ── Victim-facing C2 ──────────────────────────────────────────────────────────
+46.183.184.91 # citizen_lab_2025_06 | VPS via EDIS Global, active through April 12 2025, used in iMessage attack on Ciro Pellegrino
+
+# ── Core Israeli infrastructure ───────────────────────────────────────────────
+84.110.122.27 # citizen_lab_2025_03 | maps to forti.external-Staging-02.com
+178.237.39.204 # citizen_lab_2025_03 | maps to awake-wood.io
+
+# ── Operator infrastructure IP range ─────────────────────────────────────────
+84.110.47.82 # citizen_lab_2025_03 | operator range 84.110.47.82-86
+84.110.47.83 # citizen_lab_2025_03 | operator range 84.110.47.82-86
+84.110.47.84 # citizen_lab_2025_03 | operator range 84.110.47.82-86
+84.110.47.85 # citizen_lab_2025_03 | operator range 84.110.47.82-86
+84.110.47.86 # citizen_lab_2025_03 | operator range 84.110.47.82-86

@@ -1,0 +1,12 @@
+# Suspicious process names associated with Graphite implant activity
+# Sources: iOS sysdiagnose analysis, Citizen Lab forensics
+#
+# These are anomalous processes observed on confirmed-compromised devices.
+# Many are disguised as legitimate system processes — context matters.
+# Do not flag these as definitive without corroborating artifacts.
+
+# iOS process anomalies (seen in shutdown logs / sysdiagnose)
+# [to be populated from published forensic research]
+
+# Android process anomalies (seen via ADB on compromised devices)
+# [to be populated from published forensic research]

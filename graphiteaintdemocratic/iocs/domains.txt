@@ -1,0 +1,30 @@
+# Known Paragon Graphite C2 domains
+# Sources: Citizen Lab March 2025, Citizen Lab June 2025, WhatsApp lawsuit NDCA 2025
+# Format: domain # source | notes
+#
+# DO NOT defang these in this file — the loader needs raw domains.
+# They are defanged in comments only.
+
+# ── Core Israeli infrastructure (Citizen Lab March 2025) ──────────────────────
+forti.external-Staging-02.com # citizen_lab_2025_03 | Israeli core infra, maps to 84.110.122.27
+awake-wood.io # citizen_lab_2025_03 | Israeli core infra, maps to 178.237.39.204
+
+# ── Operator customer domains (codename infrastructure) ───────────────────────
+external-astra.com # citizen_lab_2025_03 | codename=Astra, attributed=Australia
+internal-Abba.com # citizen_lab_2025_03 | codename=Abba, attributed=Australia
+external-cap.com # citizen_lab_2025_03 | codename=Cap, attributed=Canada (Ontario Provincial Police)
+external-drt.com # citizen_lab_2025_03 | codename=Drt, attributed=Denmark
+forti.external-muki.com # citizen_lab_2025_03 | codename=Muki, attributed=Israel
+external-cag.com # citizen_lab_2025_03 | codename=Cag, attributed=Cyprus
+forti.external-sht-prd-4.com # citizen_lab_2025_03 | codename=Sht, attributed=Singapore
+forti.external-shotgun3.com # citizen_lab_2025_03 | codename=Sht variant, attributed=Singapore
+forti.external-sht.com # citizen_lab_2025_03 | codename=Sht, attributed=Singapore
+
+# ── Additional codenames (unattributed) ───────────────────────────────────────
+# Seen in certificate/infrastructure analysis; country attribution pending
+# Codenames: nelly, soundgarden, slash, galaxy, chance, anxious-poet, sincere-cookie
+
+# ── Longer-running Paragon infrastructure (Citizen Lab, 84.110.47.x range) ────
+forti.paraccess.com # citizen_lab_2025_03 | active 2021-2025, IP range 84.110.47.82-86
+modern-money.org # citizen_lab_2025_03 | active 2024-present, IP range 84.110.47.82-86
+ancient-thing.it # citizen_lab_2025_03 | active 2022-present, IP range 84.110.47.82-86

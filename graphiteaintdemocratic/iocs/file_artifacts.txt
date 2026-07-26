@@ -1,0 +1,11 @@
+# File system artifacts left by Graphite implant
+# Format: path # platform | source | notes
+#
+# iOS paths are relative to device root.
+# Backup paths assume standard iTunes backup structure.
+
+# iOS artifacts
+# [to be populated]
+
+# Android artifacts
+# [to be populated]

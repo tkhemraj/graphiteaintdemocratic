@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+*.pcap
+*.pcapng
+# never commit device backups or reports containing PII
+Backup/
+*.backup/
+gaid_report*.html

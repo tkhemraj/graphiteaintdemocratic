@@ -1,0 +1,21 @@
+# TLS certificate fingerprints for Paragon Graphite infrastructure
+# Source: Citizen Lab March 2025 (via Censys certificate transparency)
+# These are Censys query patterns, not raw fingerprints.
+# Run these queries at https://search.censys.io/certificates to enumerate current infra.
+#
+# P1 — Victim-facing C2 (~150 certs active)
+# parsed.validity_period.length_seconds=31536000 and parsed.extensions.subject_alt_name.dns_names=/.+/ and not parsed.extensions.subject_alt_name.uniform_resource_identifiers=/.+/ and not parsed.extensions.key_usage.value=[0 to 255] and not parsed.extensions.extended_key_usage.server_auth=`true` and parsed.subject_dn=/O=[a-z0-9-.]+, CN=[a-z0-9-.]+/ and (parsed.issuer_dn=/O=[a-z0-9-.]+, CN=[a-z0-9-.]+/ or not parsed.issuer_dn=/.+/)
+#
+# P2 — Customer operator endpoints (47 certs, each has identical-issuer "twin")
+# parsed.issuer.organization="Internet Widgits Pty Ltd" and parsed.extensions.subject_alt_name.dns_names=/.+/ and parsed.extensions.key_usage.value=96
+#
+# P3 — Israeli core infrastructure (8 certs)
+# parsed.issuer_dn="C=US, ST=CA, CN=Root CA"
+#
+# P4 — Graphite-specific (single cert, org literally named "Graphite", created Nov 2019)
+# parsed.subject.common_name="installerserver" and parsed.issuer.common_name="Root CA"
+#
+# Subject CN on P4 cert: installerserver
+# Issuer CN on P4 cert: Root CA
+# Organization on P4 cert: Graphite
+# Created: November 2019
